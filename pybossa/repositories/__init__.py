@@ -118,7 +118,7 @@ class Repository(object):
             subquery = self.db.session.query(Project)\
                            .with_entities(Project.id)\
                            .filter_by(owner_id=owner_id).subquery()
-            if (model != Project):
+            if (model != Project) and hasattr(model, 'project_id'):
                 query = self.db.session.query(model)\
                             .filter(model.project_id.in_(subquery),
                                     *query_args)
@@ -126,7 +126,6 @@ class Repository(object):
                 query = self.db.session.query(model)\
                             .filter(model.id.in_(subquery),
                                     *query_args)
-
         else:
             query = self.db.session.query(model).filter(*query_args)
         if len(headlines) > 0:
