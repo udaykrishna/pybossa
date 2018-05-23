@@ -786,9 +786,14 @@ def delete_account(user_id, **kwargs):
     user_repo.delete(user)
     subject = '[%s]: Your account has been deleted' % brand
     mailchimp_deleted = True
-    body = 'Hi,\nAll information we held on you has been permanently deleted. If you wish to login to Instant Wild, you will need to create a new account.\n' + \
-           '\nWhen you created your Instant Wild account a Disqus account was automatically created on your behalf to allow you to comment, however Disqus does not allow us to automatically delete this account for you. To permanently delete your data from Disqus, please do this within your Disqus account directly by following these [instructions](https://help.disqus.com/commenting/deleting-your-account.)\n' + \
-           '\nIf you opted in to receive ZSL’s e-newsletter during registration a member of the ZSL team will remove you from this list. Alternatively you can manually unsubscribe immediately by clicking [here](https://technology-trust-news.org/t/7U7-5MAN1-F0PEAGQ8DC/uns.aspx).'
+    body = render_template('/account/email/deletedata.md',
+                           user=user.dictize(),
+                           config=current_app.config)
+
+    html = render_template('/account/email/deletedata.html',
+                           user=user.dictize(),
+                           config=current_app.config)
+
     # if current_app.config.get('MAILCHIMP_API_KEY'):
     #     mailchimp_deleted = newsletter.delete_user(email)
     #     if not mailchimp_deleted:
@@ -799,7 +804,7 @@ def delete_account(user_id, **kwargs):
     if current_app.config.get('ADMINS'):
         for em in current_app.config.get('ADMINS'):
             recipients.append(em)
-    mail_dict = dict(recipients=recipients, subject=subject, body=body)
+    mail_dict = dict(recipients=recipients, subject=subject, body=body, html=html)
     send_mail(mail_dict)
 
 def export_userdata(user_id, **kwargs):
