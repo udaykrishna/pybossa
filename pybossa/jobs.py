@@ -786,13 +786,15 @@ def delete_account(user_id, **kwargs):
     user_repo.delete(user)
     subject = '[%s]: Your account has been deleted' % brand
     mailchimp_deleted = True
-    body = """Hi,\nYour account and personal data has been deleted from the %s.""" % brand
-    if current_app.config.get('MAILCHIMP_API_KEY'):
-        mailchimp_deleted = newsletter.delete_user(email)
-        if not mailchimp_deleted:
-            body += '\nWe could not delete your Mailchimp account, please contact us to fix this issue.'
-    if current_app.config.get('DISQUS_SECRET_KEY'):
-        body += '\nDisqus does not provide an API method to delete your account. You will have to do it by hand yourself in the disqus.com site.'
+    body = 'Hi,\nAll information we held on you has been permanently deleted. If you wish to login to Instant Wild, you will need to create a new account.\n' + \
+           '\nWhen you created your Instant Wild account a Disqus account was automatically created on your behalf to allow you to comment, however Disqus does not allow us to automatically delete this account for you. To permanently delete your data from Disqus, please do this within your Disqus account directly by following these [instructions](https://help.disqus.com/commenting/deleting-your-account.)\n' + \
+           '\nIf you opted in to receive ZSL’s e-newsletter during registration a member of the ZSL team will remove you from this list. Alternatively you can manually unsubscribe immediately by clicking [here](https://technology-trust-news.org/t/7U7-5MAN1-F0PEAGQ8DC/uns.aspx).'
+    # if current_app.config.get('MAILCHIMP_API_KEY'):
+    #     mailchimp_deleted = newsletter.delete_user(email)
+    #     if not mailchimp_deleted:
+    #         body += '\nWe could not delete your Mailchimp account, please contact us to fix this issue.'
+    # if current_app.config.get('DISQUS_SECRET_KEY'):
+    #     body += '\nDisqus does not provide an API method to delete your account. You will have to do it by hand yourself in the disqus.com site.'
     recipients = [email]
     if current_app.config.get('ADMINS'):
         for em in current_app.config.get('ADMINS'):
