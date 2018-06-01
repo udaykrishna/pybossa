@@ -54,7 +54,7 @@ class Project(db.Model, DomainObject):
     #: Project webhook
     webhook = Column(Text)
     #: If the project allows anonymous contributions
-    allow_anonymous_contributors = Column(Boolean, default=False)
+    allow_anonymous_contributors = Column(Boolean, default=True)
     #: If the project is published
     published = Column(Boolean, nullable=False, default=False)
     # If the project is featured
