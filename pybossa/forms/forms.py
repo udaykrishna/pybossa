@@ -247,6 +247,42 @@ class BulkTaskS3ImportForm(Form):
             'bucket': self.bucket.data
         }
 
+class BulkTaskLocalExcelImportForm(Form):
+    form_name = TextField(label=None, widget=HiddenInput(), default='localExcel')
+    _allowed_extensions = set(['xlsx','xls'])
+    def _allowed_file(self, filename):
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1] in self._allowed_extensions
+
+    def _container(self):
+        return "user_%d" % current_user.id
+
+    def _upload_path(self):
+        container = self._container()
+        filepath = None
+        if isinstance(uploader, local.LocalUploader):
+            filepath = safe_join(uploader.upload_folder, container)
+            if not os.path.isdir(filepath):
+                os.makedirs(filepath)
+            return filepath
+
+        current_app.logger.error('Failed to generate upload path {0}'.format(filepath))
+        raise IOError('Local Upload folder is missing: {0}'.format(filepath))
+
+    def get_import_data(self):
+        if request.method == 'POST':
+            if 'file' not in request.files:
+                return {'type': 'Excel', 'Excel_filename': None}
+            csv_file = request.files['file']
+            if csv_file.filename == '':
+                return {'type': 'Excel', 'Excel_filename': None}
+            if csv_file and self._allowed_file(csv_file.filename):
+                filename = secure_filename(csv_file.filename)
+                filepath = self._upload_path()
+                tmpfile = safe_join(filepath, filename)
+                csv_file.save(tmpfile)
+                return {'type': 'Excel', 'Excel_filename': tmpfile}
+        return {'type': 'Excel', 'Excel_filename': None}
 
 class BulkTaskLocalCSVImportForm(Form):
     form_name = TextField(label=None, widget=HiddenInput(), default='localCSV')
@@ -297,7 +333,8 @@ class GenericBulkTaskImportForm(object):
               'twitter': BulkTaskTwitterImportForm,
               's3': BulkTaskS3ImportForm,
               'youtube': BulkTaskYoutubeImportForm,
-              'localCSV': BulkTaskLocalCSVImportForm }
+              'localCSV': BulkTaskLocalCSVImportForm,
+              'Excel':BulkTaskLocalExcelImportForm }
 
     def __call__(self, form_name, *form_args, **form_kwargs):
         if form_name is None:

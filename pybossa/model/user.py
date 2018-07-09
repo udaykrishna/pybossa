@@ -50,7 +50,7 @@ class User(db.Model, DomainObject, UserMixin):
     passwd_hash = Column(Unicode(length=254), unique=True)
     ldap = Column(Unicode, unique=True)
     admin = Column(Boolean, default=False)
-    pro = Column(Boolean, default=False)
+    pro = Column(Boolean, default=True)
     privacy_mode = Column(Boolean, default=True, nullable=False)
     category = Column(Integer)
     flags = Column(Integer)
@@ -62,7 +62,7 @@ class User(db.Model, DomainObject, UserMixin):
     valid_email = Column(Boolean, default=False)
     confirmation_email_sent = Column(Boolean, default=False)
     subscribed = Column(Boolean, default=True)
-    consent = Column(Boolean, default=False)
+    consent = Column(Boolean, default=True)
     info = Column(MutableDict.as_mutable(JSONB), default=dict())
 
     ## Relationships
