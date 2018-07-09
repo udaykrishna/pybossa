@@ -27,9 +27,10 @@ class BulkTaskExcelImport(BulkTaskImport):
     def _import_excel_tasks(self):
         data = pd.DataFrame(self.df)
         headers = data.iloc[0,:].dropna().tolist()
-        
         if data.shape[1] != len(headers):
-            raise ValueError("Headers cannot be empty")
+            msg = gettext('The file you uploaded has '
+                          'Empty Headers')
+            raise BulkImportException(msg)
             
         internal_fields = set(['state', 'quorum', 'calibration', 'priority_0',
                             'n_answers'])
@@ -39,7 +40,9 @@ class BulkTaskExcelImport(BulkTaskImport):
         #    raise ValueError("{0} cannot be accepted in header field. please change them.".format(clash_headers))
         
         if len(set(headers)) != len(headers):
-            raise ValueError("Ensure that column names are different")
+            msg = gettext('The file you uploaded has '
+                          'multiple columns with same column name')
+            raise BulkImportException(msg)
         else:
             data = data.iloc[1:,:]
             data.columns = headers

@@ -18,6 +18,7 @@
 
 from flask.ext.babel import gettext
 from .csv import BulkTaskCSVImport, BulkTaskGDImport, BulkTaskLocalCSVImport
+from .excel import BulkTaskExcelImport
 from .dropbox import BulkTaskDropboxImport
 from .flickr import BulkTaskFlickrImport
 from .twitterapi import BulkTaskTwitterImport
@@ -35,7 +36,8 @@ class Importer(object):
                                gdocs=BulkTaskGDImport,
                                epicollect=BulkTaskEpiCollectPlusImport,
                                s3=BulkTaskS3Import,
-                               localCSV=BulkTaskLocalCSVImport)
+                               localCSV=BulkTaskLocalCSVImport,
+                               excel=BulkTaskExcelImport)
         self._importer_constructor_params = dict()
 
     def register_flickr_importer(self, flickr_params):
