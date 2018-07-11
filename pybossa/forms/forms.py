@@ -471,8 +471,7 @@ class ChangePasswordForm(Form):
     confirm = PasswordField(lazy_gettext('Repeat password'))
 
 
-class ResetPassword
-(Form):
+class ResetPassword(Form):
 
     """Class for resetting user's password."""
 
