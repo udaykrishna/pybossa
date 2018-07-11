@@ -247,8 +247,8 @@ class BulkTaskS3ImportForm(Form):
             'bucket': self.bucket.data
         }
 
-class BulkTaskLocalExcelImportForm(Form):
-    form_name = TextField(label=None, widget=HiddenInput(), default='localExcel')
+class BulkTaskExcelImportForm(Form):
+    form_name = TextField(label=None, widget=HiddenInput(), default='Excel')
     _allowed_extensions = set(['xlsx','xls'])
     def _allowed_file(self, filename):
         return '.' in filename and \
@@ -334,7 +334,7 @@ class GenericBulkTaskImportForm(object):
               's3': BulkTaskS3ImportForm,
               'youtube': BulkTaskYoutubeImportForm,
               'localCSV': BulkTaskLocalCSVImportForm,
-              'Excel':BulkTaskLocalExcelImportForm }
+              'Excel':BulkTaskExcelImportForm }
 
     def __call__(self, form_name, *form_args, **form_kwargs):
         if form_name is None:
@@ -471,7 +471,8 @@ class ChangePasswordForm(Form):
     confirm = PasswordField(lazy_gettext('Repeat password'))
 
 
-class ResetPasswordForm(Form):
+class ResetPassword
+(Form):
 
     """Class for resetting user's password."""
 
