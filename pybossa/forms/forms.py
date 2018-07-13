@@ -248,7 +248,7 @@ class BulkTaskS3ImportForm(Form):
         }
 
 class BulkTaskExcelImportForm(Form):
-    form_name = TextField(label=None, widget=HiddenInput(), default='Excel')
+    form_name = TextField(label=None, widget=HiddenInput(), default='excel')
     _allowed_extensions = set(['xlsx','xls'])
     def _allowed_file(self, filename):
         return '.' in filename and \
@@ -272,17 +272,17 @@ class BulkTaskExcelImportForm(Form):
     def get_import_data(self):
         if request.method == 'POST':
             if 'file' not in request.files:
-                return {'type': 'excel', 'Excel_filename': None}
-            Excel_file = request.files['file']
-            if Excel_file.filename == '':
-                return {'type': 'excel', 'Excel_filename': None}
-            if Excel_file and self._allowed_file(Excel_file.filename):
-                filename = secure_filename(Excel_file.filename)
+                return {'type': 'excel', 'excel_filename': None}
+            excel_file = request.files['file']
+            if excel_file.filename == '':
+                return {'type': 'excel', 'excel_filename': None}
+            if excel_file and self._allowed_file(excel_file.filename):
+                filename = secure_filename(excel_file.filename)
                 filepath = self._upload_path()
                 tmpfile = safe_join(filepath, filename)
-                Excel_file.save(tmpfile)
-                return {'type': 'excel', 'Excel_filename': tmpfile}
-        return {'type': 'excel', 'Excel_filename': None}
+                excel_file.save(tmpfile)
+                return {'type': 'excel', 'excel_filename': tmpfile}
+        return {'type': 'excel', 'excel_filename': None}
 
 class BulkTaskLocalCSVImportForm(Form):
     form_name = TextField(label=None, widget=HiddenInput(), default='localCSV')

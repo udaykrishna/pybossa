@@ -10,14 +10,14 @@ class BulkTaskExcelImport(BulkTaskImport):
 
     """Class to import Excel tasks in bulk."""
 
-    importer_id = "Excel"
+    importer_id = "excel"
 
     def __init__(self, last_import_meta=None, **form_data):
         self.form_data = form_data
 
     def tasks(self):
         """Get tasks from a given URL/file."""
-        datapath = self.form_data['Excel_filename']
+        datapath = self.form_data['excel_filename']
         self.df = pd.read_excel(datapath)
         return self._import_excel_tasks()
 
