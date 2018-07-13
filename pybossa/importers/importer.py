@@ -37,7 +37,7 @@ class Importer(object):
                                epicollect=BulkTaskEpiCollectPlusImport,
                                s3=BulkTaskS3Import,
                                localCSV=BulkTaskLocalCSVImport,
-                               excel=BulkTaskExcelImport)
+                               Excel=BulkTaskExcelImport)
         self._importer_constructor_params = dict()
 
     def register_flickr_importer(self, flickr_params):
