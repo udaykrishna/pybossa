@@ -8,7 +8,7 @@ from werkzeug.datastructures import FileStorage
 
 class BulkTaskExcelImport(BulkTaskImport):
 
-    """Class to import CSV tasks in bulk."""
+    """Class to import Excel tasks in bulk."""
 
     importer_id = "Excel"
 
@@ -16,7 +16,7 @@ class BulkTaskExcelImport(BulkTaskImport):
         self.form_data = form_data
 
     def tasks(self):
-        """Get tasks from a given URL."""
+        """Get tasks from a given URL/file."""
         datapath = self.form_data['Excel_filename']
         self.df = pd.read_excel(datapath)
         return self._import_excel_tasks()
