@@ -62,6 +62,7 @@ requirements = [
     "otpauth>=1.0.1, <1.0.2",
     "Flask-SimpleLDAP >=1.1.2, <1.1.3",
     "flask_profiler >= 1.6, <1.6.1",
+    "xlrd",
 ]
 
 setup(

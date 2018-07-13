@@ -14,18 +14,18 @@ class BulkTaskExcelImport(BulkTaskImport):
 
     def __init__(self, last_import_meta=None, **form_data):
         self.form_data = form_data
+        datapath = self.form_data['excel_filename']
+        self.df = pd.read_excel(datapath)
 
     def tasks(self):
         """Get tasks from a given URL/file."""
-        datapath = self.form_data['excel_filename']
-        self.df = pd.read_excel(datapath)
         return self._import_excel_tasks()
 
     def count_tasks(self):
         return self.df.shape[0]
 
     def _import_excel_tasks(self):
-        data = pd.DataFrame(self.df)
+        data = self.df
         headers = data.iloc[0,:].dropna().tolist()
         if data.shape[1] != len(headers):
             msg = gettext('The file you uploaded has '
