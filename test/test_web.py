@@ -5335,7 +5335,8 @@ class TestWeb(web.Helper):
                      "projects/tasks/gdocs.html",
                      "projects/tasks/dropbox.html",
                      "projects/tasks/flickr.html",
-                     "projects/tasks/localCSV.html"]
+                     "projects/tasks/localCSV.html",
+                     "projects/tasks/excel.html"]
         assert data['available_importers'] == importers, data
 
         importers = ['&type=epicollect',
@@ -5346,7 +5347,8 @@ class TestWeb(web.Helper):
                      '&type=gdocs',
                      '&type=dropbox',
                      '&type=flickr',
-                     '&type=localCSV']
+                     '&type=localCSV',
+                     '&type=excel']
 
         for importer in importers:
             res = self.app_get_json(url + importer)

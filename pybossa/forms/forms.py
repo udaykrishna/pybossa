@@ -272,17 +272,17 @@ class BulkTaskExcelImportForm(Form):
     def get_import_data(self):
         if request.method == 'POST':
             if 'file' not in request.files:
-                return {'type': 'Excel', 'Excel_filename': None}
-            csv_file = request.files['file']
-            if csv_file.filename == '':
-                return {'type': 'Excel', 'Excel_filename': None}
-            if csv_file and self._allowed_file(csv_file.filename):
-                filename = secure_filename(csv_file.filename)
+                return {'type': 'excel', 'Excel_filename': None}
+            Excel_file = request.files['file']
+            if Excel_file.filename == '':
+                return {'type': 'excel', 'Excel_filename': None}
+            if Excel_file and self._allowed_file(Excel_file.filename):
+                filename = secure_filename(Excel_file.filename)
                 filepath = self._upload_path()
                 tmpfile = safe_join(filepath, filename)
-                csv_file.save(tmpfile)
-                return {'type': 'Excel', 'Excel_filename': tmpfile}
-        return {'type': 'Excel', 'Excel_filename': None}
+                Excel_file.save(tmpfile)
+                return {'type': 'excel', 'Excel_filename': tmpfile}
+        return {'type': 'excel', 'Excel_filename': None}
 
 class BulkTaskLocalCSVImportForm(Form):
     form_name = TextField(label=None, widget=HiddenInput(), default='localCSV')
@@ -334,7 +334,7 @@ class GenericBulkTaskImportForm(object):
               's3': BulkTaskS3ImportForm,
               'youtube': BulkTaskYoutubeImportForm,
               'localCSV': BulkTaskLocalCSVImportForm,
-              'Excel':BulkTaskExcelImportForm }
+              'excel':BulkTaskExcelImportForm }
 
     def __call__(self, form_name, *form_args, **form_kwargs):
         if form_name is None:
