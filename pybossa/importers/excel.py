@@ -23,10 +23,12 @@ class BulkTaskExcelImport(BulkTaskImport):
         return self._import_excel_tasks()
 
     def count_tasks(self):
-        return self.df.shape[0]
+        return len([task for task in self.tasks()])
 
     def _import_excel_tasks(self):
-        data = self.df
+        datapath = self.form_data['excel_filename']
+        f = io.BytesIO(FileStorage(io.open(datapath,'rb')).stream.read())
+        data = pd.read_excel(f,header=None)
         headers = data.iloc[0,:].dropna().tolist()
         if data.shape[1] != len(headers):
             msg = gettext('The file you uploaded has '
