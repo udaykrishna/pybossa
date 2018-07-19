@@ -15,8 +15,6 @@ class BulkTaskExcelImport(BulkTaskImport):
 
     def __init__(self, last_import_meta=None, **form_data):
         self.form_data = form_data
-        datapath = self.form_data['excel_filename']
-        self.df = pd.read_excel(FileStorage(io.open(datapath, encoding='utf-8-sig')).stream.read())
 
     def tasks(self):
         """Get tasks from a given URL/file."""
