@@ -18,15 +18,19 @@ class BulkTaskExcelImport(BulkTaskImport):
 
     def tasks(self):
         """Get tasks from a given URL/file."""
-        return self._import_excel_tasks()
+        return self._get_excel_data()
 
     def count_tasks(self):
         return len([task for task in self.tasks()])
 
-    def _import_excel_tasks(self):
+    def _get_excel_data(self):
         datapath = self.form_data['excel_filename']
         f = io.BytesIO(FileStorage(io.open(datapath,'rb')).stream.read())
         data = pd.read_excel(f,header=None)
+        return self._import_excel_tasks(data)
+
+
+    def _import_excel_tasks(self):
         headers = data.iloc[0,:].dropna().tolist()
         if data.shape[1] != len(headers):
             msg = gettext('The file you uploaded has '
