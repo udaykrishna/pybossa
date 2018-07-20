@@ -27,14 +27,17 @@ class BulkTaskExcelImport(BulkTaskImport):
     def _get_excel_data(self,filename):
         datapath = filename
         retry = 0
+        f = None
         while retry<=10:
             try:
                 f = io.BytesIO(FileStorage(io.open(datapath,'rb')).stream.read())
                 break
-            except IOError as e:
+            except Exception as e:
                 time.sleep(2)
                 retry = retry + 1
-            
+        if f is None:
+            msg = ("Unable to load excel file for import, file {0}".format(csv_filename))
+            raise BulkImportException(gettext(msg), 'error')
         data = pd.read_excel(f,header=None)
         return self._import_excel_tasks(data)
 
