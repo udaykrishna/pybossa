@@ -36,7 +36,7 @@ class BulkTaskExcelImport(BulkTaskImport):
                 time.sleep(2)
                 retry = retry + 1
         if f is None:
-            msg = ("Unable to load excel file for import, file {0}".format(csv_filename))
+            msg = ("Unable to load excel file for import, file {0}".format(datapath))
             raise BulkImportException(gettext(msg), 'error')
         data = pd.read_excel(f,header=None)
         return self._import_excel_tasks(data)
