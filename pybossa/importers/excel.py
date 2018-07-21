@@ -63,6 +63,6 @@ class BulkTaskExcelImport(BulkTaskImport):
         else:
             data = data.iloc[1:,:]
             data.columns = headers
-        data["info"] = data.loc[:,non_clash_headers].to_json(orient="records")
+        data["info"] = json.loads(data.loc[:,non_clash_headers].to_json(orient="records"))
         data.drop(non_clash_headers,axis=1,inplace=True)
         return json.loads(data.to_json(orient='records'))
